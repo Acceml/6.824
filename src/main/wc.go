@@ -4,6 +4,9 @@ import (
 	"fmt"
 	"mapreduce"
 	"os"
+	"strconv"
+	"strings"
+	"unicode"
 )
 
 //
@@ -15,6 +18,14 @@ import (
 //
 func mapF(filename string, contents string) []mapreduce.KeyValue {
 	// Your code here (Part II).
+	var res = make([]mapreduce.KeyValue, 0)
+	ss := strings.FieldsFunc(contents, func(c rune) bool {
+		return !unicode.IsLetter(c)
+	})
+	for _, s := range ss {
+		res = append(res, mapreduce.KeyValue{s, "1"})
+	}
+	return res
 }
 
 //
@@ -22,8 +33,10 @@ func mapF(filename string, contents string) []mapreduce.KeyValue {
 // map tasks, with a list of all the values created for that key by
 // any map task.
 //
+
 func reduceF(key string, values []string) string {
 	// Your code here (Part II).
+	return strconv.FormatInt(int64(len(values)), 10)
 }
 
 // Can be run in 3 ways:

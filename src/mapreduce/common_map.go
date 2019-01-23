@@ -70,6 +70,9 @@ func doMap(
 	var fileName2files = make(map[string]*os.File, nReduce)
 
 	for _, kv := range inPut {
+		if kv.Key == "" {
+			continue
+		}
 		// 创建文件
 		var fileName = reduceName(jobName, mapTask, ihash(kv.Key)%nReduce)
 		_, ok := fileName2files[fileName]

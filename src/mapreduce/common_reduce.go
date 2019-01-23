@@ -67,13 +67,14 @@ func doReduce(
 			if err != nil {
 				break
 			}
-			_, ok := key2values[kv.Key]
-			if !ok {
-				key2values[kv.Key] = []string{}
-			}
 
-			var values = key2values[kv.Key]
-			values = append(values, kv.Value)
+			if val, ok := key2values[kv.Key]; ok {
+				val = append(val, kv.Value)
+				key2values[kv.Key] = val
+
+			} else {
+				key2values[kv.Key] = []string{kv.Value}
+			}
 		}
 	}
 
